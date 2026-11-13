@@ -637,10 +637,7 @@ export default function HymnLibrary() {
 
         <main className="page-content">
           <section aria-labelledby="page-title">
-            <div className="eyebrow">
-              <Icon name="sparkle" size={14} />
-              GPA church hymn book
-            </div>
+            
             <h1 className="page-heading" id="page-title">
               {activeView === "saved" ? "Your favourites" : "Hymns for every season"}
             </h1>
