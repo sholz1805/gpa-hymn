@@ -25,6 +25,8 @@ function getHymnLetter(title) {
 
 const savedHymnsKey = "gpa-hymn-library:saved";
 const savedHymnsEvent = "gpa-hymn-library:saved-change";
+const themeKey = "gpa-hymn-library:theme";
+const themeChangedEvent = "gpa-hymn-library:theme-change";
 
 function subscribeToSavedHymns(onChange) {
   window.addEventListener("storage", onChange);
@@ -54,6 +56,27 @@ function parseSavedHymns(snapshot) {
   }
 }
 
+function subscribeToTheme(onChange) {
+  window.addEventListener("storage", onChange);
+  window.addEventListener(themeChangedEvent, onChange);
+  return () => {
+    window.removeEventListener("storage", onChange);
+    window.removeEventListener(themeChangedEvent, onChange);
+  };
+}
+
+function getThemeSnapshot() {
+  try {
+    const storedTheme = window.localStorage.getItem(themeKey);
+    return storedTheme === "light" || storedTheme === "dark"
+      ? storedTheme
+      : "light";
+  } catch (error) {
+    console.error("Could not read the saved theme from local storage.", error);
+    return document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+  }
+}
+
 function Icon({ name, size = 18, strokeWidth = 1.8, filled = false }) {
   const common = {
     fill: "none",
@@ -78,6 +101,13 @@ function Icon({ name, size = 18, strokeWidth = 1.8, filled = false }) {
         <path d="m16 16 4.5 4.5" />
       </>
     ),
+    sun: (
+      <>
+        <circle cx="12" cy="12" r="4" />
+        <path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" />
+      </>
+    ),
+    moon: <path d="M20.9 13A8.5 8.5 0 0 1 11 3.1 8.5 8.5 0 1 0 20.9 13Z" />,
     menu: (
       <>
         <path d="M4 7h16M4 12h16M4 17h16" />
@@ -202,6 +232,11 @@ export default function HymnLibrary() {
     process.env.NODE_ENV === "production" ? "checking" : "development",
   );
   const [installPrompt, setInstallPrompt] = useState(null);
+  const theme = useSyncExternalStore(
+    subscribeToTheme,
+    getThemeSnapshot,
+    () => "light",
+  );
   const topics = language === "English" ? englishTopics : yorubaTopics;
   const savedSnapshot = useSyncExternalStore(
     subscribeToSavedHymns,
@@ -211,6 +246,10 @@ export default function HymnLibrary() {
   const savedIds = parseSavedHymns(savedSnapshot).filter((id) =>
     libraryHymns.some((hymn) => hymn.id === id),
   );
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+  }, [theme]);
 
   useEffect(() => {
     if (!("serviceWorker" in navigator)) {
@@ -382,6 +421,17 @@ export default function HymnLibrary() {
     }
   }
 
+  function toggleTheme() {
+    const nextTheme = theme === "light" ? "dark" : "light";
+    try {
+      window.localStorage.setItem(themeKey, nextTheme);
+    } catch (error) {
+      console.error("Could not save the selected theme to local storage.", error);
+    }
+    document.documentElement.dataset.theme = nextTheme;
+    window.dispatchEvent(new Event(themeChangedEvent));
+  }
+
   return (
     <div className="app-shell">
       {menuOpen && (
@@ -487,6 +537,15 @@ export default function HymnLibrary() {
             <strong>Welcome to your hymn library</strong>
           </div>
           <div className="topbar-actions">
+            <button
+              aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+              className="theme-toggle"
+              onClick={toggleTheme}
+              title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+              type="button"
+            >
+              <Icon name={theme === "light" ? "moon" : "sun"} size={18} />
+            </button>
             <form
               className="search-wrapper"
               onSubmit={(event) => {

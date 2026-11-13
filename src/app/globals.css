@@ -247,6 +247,25 @@ input:focus-visible {
   gap: 15px;
 }
 
+.theme-toggle {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.theme-toggle:hover {
+  background: var(--blue-soft);
+  color: var(--blue);
+}
+
 .search-wrapper {
   position: relative;
   width: min(360px, 35vw);
@@ -1192,6 +1211,11 @@ input:focus-visible {
     gap: 9px;
   }
 
+  .theme-toggle {
+    width: 36px;
+    height: 36px;
+  }
+
   .search-wrapper {
     width: min(230px, 48vw);
   }
@@ -1285,6 +1309,14 @@ input:focus-visible {
     font-size: 29px;
   }
 
+  .topbar-actions {
+    gap: 6px;
+  }
+
+  .search-wrapper {
+    width: min(190px, 42vw);
+  }
+
   .hero-footer {
     gap: 10px;
   }
@@ -1312,6 +1344,113 @@ input:focus-visible {
   .hymn-modal {
     padding: 30px 22px;
   }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #111722;
+  --surface: #1a2231;
+  --ink: #edf1f8;
+  --muted: #a4afc2;
+  --line: #303b4e;
+  --blue: #8eaff7;
+  --blue-dark: #abc4ff;
+  --blue-soft: #293852;
+  --green: #57d4a0;
+  --surface-muted: #202a3a;
+  --surface-hover: #263248;
+  --text-soft: #c3ccda;
+}
+
+:root[data-theme="dark"] .brand-mark,
+:root[data-theme="dark"] .search-box,
+:root[data-theme="dark"] .offline-card,
+:root[data-theme="dark"] .language-options,
+:root[data-theme="dark"] .alphabet-index select,
+:root[data-theme="dark"] .hymn-grid,
+:root[data-theme="dark"] .hymn-modal,
+:root[data-theme="dark"] .theme-toggle,
+:root[data-theme="dark"] .menu-toggle {
+  border-color: var(--line);
+  background-color: var(--surface);
+}
+
+:root[data-theme="dark"] .topbar {
+  border-color: var(--line);
+  background: rgb(26 34 49 / 92%);
+}
+
+:root[data-theme="dark"] .search-results,
+:root[data-theme="dark"] .topics-dropdown > summary,
+:root[data-theme="dark"] .topic-list,
+:root[data-theme="dark"] .hymn-grid,
+:root[data-theme="dark"] .hymn-modal {
+  border-color: var(--line);
+  background-color: var(--surface);
+}
+
+:root[data-theme="dark"] .side-label,
+:root[data-theme="dark"] .search-box,
+:root[data-theme="dark"] .search-box input::placeholder,
+:root[data-theme="dark"] .library-title small,
+:root[data-theme="dark"] .language-button,
+:root[data-theme="dark"] .icon-button {
+  color: var(--muted);
+}
+
+:root[data-theme="dark"] .nav-button {
+  color: var(--text-soft);
+}
+
+:root[data-theme="dark"] .nav-button:hover,
+:root[data-theme="dark"] .search-result:hover,
+:root[data-theme="dark"] .search-result[aria-selected="true"],
+:root[data-theme="dark"] .hymn-card:hover {
+  background-color: var(--surface-hover);
+}
+
+:root[data-theme="dark"] .nav-button.active,
+:root[data-theme="dark"] .language-button.selected {
+  background-color: #426bb9;
+  color: #fff;
+}
+
+:root[data-theme="dark"] .topic-link,
+:root[data-theme="dark"] .topic-link-count,
+:root[data-theme="dark"] .hymn-card {
+  border-color: var(--line);
+}
+
+:root[data-theme="dark"] .topic-link-count,
+:root[data-theme="dark"] .letter-heading,
+:root[data-theme="dark"] .modal-close {
+  background-color: var(--surface-muted);
+}
+
+:root[data-theme="dark"] .topic-link-count {
+  color: var(--muted);
+}
+
+:root[data-theme="dark"] .alphabet-index select {
+  color: var(--ink);
+}
+
+:root[data-theme="dark"] .letter-heading {
+  color: var(--blue);
+}
+
+:root[data-theme="dark"] .hymn-verses p,
+:root[data-theme="dark"] .hymn-chorus p {
+  color: var(--text-soft);
+}
+
+:root[data-theme="dark"] .hymn-chorus {
+  background-color: #1d332e;
+}
+
+:root[data-theme="dark"] .empty-state {
+  border-color: var(--line);
+  background-color: rgb(26 34 49 / 65%);
 }
 
 @media (prefers-reduced-motion: reduce) {
