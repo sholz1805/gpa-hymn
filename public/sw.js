@@ -1,4 +1,4 @@
-const CACHE_NAME = "gpa-hymns-v1";
+const CACHE_NAME = "gpa-hymns-v2";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -12,7 +12,7 @@ self.addEventListener("install", (event) => {
       const pageHtml = await pageResponse.clone().text();
       await cache.put("/", pageResponse);
       await cache.addAll([
-        "/GPALogo.png",
+        "/images/GPALogo.png",
         "/android-chrome-192x192.png",
         "/android-chrome-512x512.png",
         "/manifest.webmanifest",
@@ -88,7 +88,7 @@ self.addEventListener("fetch", (event) => {
 
   const isAppAsset =
     requestUrl.pathname.startsWith("/_next/static/") ||
-    requestUrl.pathname === "/GPALogo.png";
+    requestUrl.pathname === "/images/GPALogo.png";
 
   if (isAppAsset) {
     event.respondWith(

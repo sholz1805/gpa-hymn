@@ -118,7 +118,7 @@ function BrandMark() {
         alt="Gospel Pentecostal Assembly"
         height={40}
         unoptimized
-        src="/GPALogo.png"
+        src="/images/GPALogo.png"
         width={40}
       />
     </span>
@@ -639,7 +639,7 @@ export default function HymnLibrary() {
                   className="hero-logo"
                   height={118}
                   unoptimized
-                  src="/GPALogo.png"
+                  src="/images/GPALogo.png"
                   width={118}
                 />
               </div>
