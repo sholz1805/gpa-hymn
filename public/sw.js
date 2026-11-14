@@ -1,4 +1,4 @@
-const CACHE_NAME = "gpa-hymns-v2";
+const CACHE_NAME = "gpa-hymns-v4";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -92,14 +92,22 @@ self.addEventListener("fetch", (event) => {
 
   if (isAppAsset) {
     event.respondWith(
-      caches.open(CACHE_NAME).then(async (cache) => {
-        const cached = await cache.match(request);
-        if (cached) return cached;
+      (async () => {
+        const cache = await caches.open(CACHE_NAME);
+        try {
+          const response = await fetch(request);
+          if (response.ok) {
+            await cache.put(request, response.clone());
+            return response;
+          }
 
-        const response = await fetch(request);
-        if (response.ok) await cache.put(request, response.clone());
-        return response;
-      }),
+          return (await cache.match(request)) || response;
+        } catch (error) {
+          const cached = await cache.match(request);
+          if (cached) return cached;
+          throw error;
+        }
+      })(),
     );
   }
 });
